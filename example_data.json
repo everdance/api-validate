@@ -1,0 +1,9 @@
+[
+  {
+    "title": "Get Exchange Rate",
+    "url": "/v4/latest/{base}",
+    "method": "GET",
+    "params": { "base": "USD" },
+    "headers": { "Accept": "application/json" }
+  }
+]

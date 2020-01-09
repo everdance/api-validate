@@ -1,6 +1,6 @@
 # API Validate
 
-validate api response data against blueprint api documented schema.
+validate api response data against blueprint api documented schema. can be used to help contract testing.
 based on [ajv validator](https://ajv.js.org/) and [apiaryio/protagonist](https://github.com/apiaryio/protagonist)
 
 usage:

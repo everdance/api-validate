@@ -1,7 +1,7 @@
 {
-  "name": "contract-test",
+  "name": "api-validate",
   "version": "1.0.0",
-  "description": "contract test helper",
+  "description": "tool to help contract test",
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"

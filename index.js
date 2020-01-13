@@ -11,8 +11,8 @@ const _ = require('lodash');
 const { retrieve, getHost } = require('./specs.js');
 
 const argv = require('optimist').
-      usage('Usage: $0 -s [schema_file] -d [data_file]').
-      demand(['s','d']).argv;
+      usage('Usage: $0 -s [schema_file] [-d [data_file]]').
+      demand(['s']).argv;
 
 // read blueprint api spec
 const specFile = fs.readFileSync(argv.s, {encoding: 'utf8'});
@@ -22,6 +22,12 @@ const specJson = protagonist.parseSync(specFile);
 // retrieve http specs
 const host = getHost(specJson.content);
 const specs = retrieve(specJson.content);
+
+// only generate http spects
+if (!argv.d) {
+  console.log(specs);
+  return
+}
 
 // parse data
 const dataFile = fs.readFileSync(argv.d, {encoding: 'utf8'});

@@ -1,7 +1,7 @@
 #!/usr/bin/env node
 
 const fs = require('fs');
-const assert = require('chai').assert;
+const process = require('process');
 const request = require('request');
 const Ajv = require('ajv');
 const async = require('async');
@@ -40,8 +40,7 @@ async.eachSeries(reqData, (r, cb) => {
                       s.method === r.method);
   if (!spec) {
     console.log(chalk.yellow(`[SKIP] ${r.title} ==> SPEC NOT FOUND`));
-    cb();
-    return;
+    return cb();
   }
 
   // interpolate path param
@@ -70,14 +69,23 @@ async.eachSeries(reqData, (r, cb) => {
   }, (err, res, body) => {
     console.log(chalk.gray(`${spec.method} ${url}`));
     // check status code
-    assert.equal(res.statusCode, 200, 'get 200 status code');
+    if (_.get(res, 'statusCode') !== 200) {
+      return cb('non 200 response status');
+    }
 
     if (spec.schema) {
-      assert.equal(ajv.validate(spec.schema, JSON.parse(body)),
-        true, 'body schema validation');
+      var valid = ajv.validate(spec.schema, JSON.parse(body))
+      if (!valid) {
+        return cb(ajv.errors);
+      }
     }
 
     console.log(chalk.green(' ===> OK'));
     cb();
   });
+}, err => {
+  if (err) {
+    console.log(chalk.red('Failed: ', JSON.stringify(err)));
+    process.exit(1);
+  }
 });

@@ -15,5 +15,3 @@ GET /v4/latest/{base}
  ===> OK
 ```
 
-## TODOs:
-* add request payload and query params

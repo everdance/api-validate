@@ -59,7 +59,7 @@ async.eachSeries(reqData, (r, cb) => {
       value();
   }
 
-  var url = `https://${host}${path}${query?'?'+query:''}`;
+  var url = `${host}${path}${query?'?'+query:''}`;
 
   request({
     method: spec.method,

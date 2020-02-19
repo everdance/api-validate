@@ -70,7 +70,7 @@ async.eachSeries(reqData, (r, cb) => {
     console.log(chalk.gray(`${spec.method} ${url}`));
     // check status code
     if (_.get(res, 'statusCode') !== 200) {
-      return cb('non 200 response status');
+      return cb(`non 200 response status:${body}`);
     }
 
     if (spec.schema) {

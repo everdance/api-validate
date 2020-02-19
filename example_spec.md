@@ -1,5 +1,5 @@
 FORMAT: 1A
-HOST: api.exchangerate-api.com
+HOST: https://api.exchangerate-api.com
 
 # Exchange Rate API
 

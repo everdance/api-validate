@@ -36,6 +36,15 @@ const reqData = JSON.parse(dataFile);
 const ajv = new Ajv();
 // test requests
 async.eachSeries(reqData, (r, cb) => {
+  // delay metas
+  if (r.delay_secs) {
+    setTimeout(() => {
+      console.log(chalk.yellow(`[DELAY] ${r.delay_secs} seconds`));
+      cb();
+    }, r.delay_secs * 1000)
+    return
+  }
+  
   const spec = _.find(specs, s => s.url === r.url &&
                       s.method === r.method);
   if (!spec) {

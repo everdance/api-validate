@@ -11,7 +11,7 @@ const _ = require('lodash');
 const { retrieve, getHost } = require('./specs.js');
 
 const argv = require('optimist').
-      usage('Usage: $0 -s [schema_file] [-d [data_file]]').
+      usage('Usage: $0 -s [schema_file] [-d [data_file]] [-h [host]]').
       demand(['s']).argv;
 
 // read blueprint api spec
@@ -20,7 +20,6 @@ const specJson = protagonist.parseSync(specFile);
 
 
 // retrieve http specs
-const host = getHost(specJson.content);
 const specs = retrieve(specJson.content);
 
 // only generate http specs
@@ -29,6 +28,8 @@ if (!argv.d) {
   return
 }
 
+var host = argv.h || getHost(specJson.content);
+
 // parse data
 const dataFile = fs.readFileSync(argv.d, {encoding: 'utf8'});
 const reqData = JSON.parse(dataFile);
@@ -36,15 +37,6 @@ const reqData = JSON.parse(dataFile);
 const ajv = new Ajv();
 // test requests
 async.eachSeries(reqData, (r, cb) => {
-  // delay metas
-  if (r.delay_secs) {
-    setTimeout(() => {
-      console.log(chalk.yellow(`[DELAY] ${r.delay_secs} seconds`));
-      cb();
-    }, r.delay_secs * 1000)
-    return
-  }
-  
   const spec = _.find(specs, s => s.url === r.url &&
                       s.method === r.method);
   if (!spec) {
